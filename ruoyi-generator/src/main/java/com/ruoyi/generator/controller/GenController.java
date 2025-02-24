@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.generator.domain.GenInfo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -259,5 +261,12 @@ public class GenController extends BaseController
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
         IOUtils.write(data, response.getOutputStream());
+    }
+
+    @PreAuthorize("@ss.hasRole('admin')")
+    @Log(title = "代码生成插入数据", businessType = BusinessType.INSERT)
+    @PostMapping("/genValue")
+    public AjaxResult genValue(@Validated @RequestBody GenInfo genInfo) {
+        return toAjax(genTableService.genValue(genInfo));
     }
 }

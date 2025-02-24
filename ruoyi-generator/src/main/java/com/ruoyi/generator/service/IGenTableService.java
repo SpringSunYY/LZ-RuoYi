@@ -2,6 +2,8 @@ package com.ruoyi.generator.service;
 
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.generator.domain.GenInfo;
 import com.ruoyi.generator.domain.GenTable;
 
 /**
@@ -127,4 +129,12 @@ public interface IGenTableService
      * @param genTable 业务信息
      */
     public void validateEdit(GenTable genTable);
+
+    /**
+     * 批量插入数据
+     *
+     * @param genInfo
+     * @return
+     */
+    int genValue(GenInfo genInfo);
 }

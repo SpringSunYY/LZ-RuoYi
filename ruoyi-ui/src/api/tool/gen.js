@@ -8,6 +8,7 @@ export function listTable(query) {
     params: query
   })
 }
+
 // 查询db数据库列表
 export function listDbTable(query) {
   return request({
@@ -81,5 +82,14 @@ export function synchDb(tableName) {
   return request({
     url: '/tool/gen/synchDb/' + tableName,
     method: 'get'
+  })
+}
+
+// 代码生成插入数据
+export function genValue(data) {
+  return request({
+    url: '/tool/gen/genValue',
+    method: 'post',
+    data: data
   })
 }
