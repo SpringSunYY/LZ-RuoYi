@@ -1,17 +1,14 @@
-package ${packageName}.model.domain;
+package ${packageName}.model.dto.${className};
 
 import java.io.Serializable;
 #foreach ($import in $importList)
 import ${import};
 #end
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
 
 /**
- * ${functionName}对象 ${tableName}
+ * ${functionName}Query对象 ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -21,13 +18,13 @@ import com.ruoyi.common.annotation.Excel;
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
-@TableName("${tableName}")
 @Data
-public class ${ClassName} implements Serializable
+public class ${ClassName}Query implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
+#if($column.isQuery.equals("1"))
     /** $column.columnComment */
 #if($column.list)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -45,11 +42,9 @@ public class ${ClassName} implements Serializable
     @Excel(name = "${comment}")
 #end
 #end
-    #if($column.isPk.equals("1"))
-    @TableId(value = "${column.columnName}", type = IdType.ASSIGN_ID)
-    #end
     private $column.javaType $column.javaField;
 
+#end
 #end
 #if($table.sub)
     /** $table.subTable.functionName信息 */
