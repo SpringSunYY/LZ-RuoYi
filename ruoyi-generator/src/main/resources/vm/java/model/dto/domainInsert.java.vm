@@ -55,15 +55,15 @@ public class ${ClassName}Insert implements Serializable
     /**
      * 对象转封装类
      *
-     * @param ${className}
-     * @return
+     * @param ${className}Insert 插入对象
+     * @return ${ClassName}Insert
      */
-    public static ${ClassName}Insert objToInsert(${ClassName} ${className}) {
-        if (${className} == null) {
+    public static ${ClassName} insertToObj(${ClassName}Insert ${className}Insert) {
+        if (${className}Insert == null) {
             return null;
         }
-            ${ClassName}Insert ${className}Insert = new ${ClassName}Insert();
-        BeanUtils.copyProperties(${className}, ${className}Insert);
-        return ${className}Insert;
+        ${ClassName} ${className} = new ${ClassName}();
+        BeanUtils.copyProperties(${className}Insert, ${className});
+        return ${className};
     }
 }

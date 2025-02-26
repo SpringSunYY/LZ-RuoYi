@@ -64,15 +64,15 @@ public class ${ClassName}Query implements Serializable
     /**
      * 对象转封装类
      *
-     * @param ${className}
-     * @return
+     * @param ${className}Query 查询对象
+     * @return ${ClassName}
      */
-    public static ${ClassName}Query objToQuery(${ClassName} ${className}) {
-        if (${className} == null) {
+    public static ${ClassName} queryToObj(${ClassName}Query ${className}Query) {
+        if (${className}Query == null) {
             return null;
         }
-            ${ClassName}Query ${className}Query = new ${ClassName}Query();
-        BeanUtils.copyProperties(${className}, ${className}Query);
-        return ${className}Query;
+        ${ClassName} ${className} = new ${ClassName}();
+        BeanUtils.copyProperties(${className}Query, ${className});
+        return ${className};
     }
 }

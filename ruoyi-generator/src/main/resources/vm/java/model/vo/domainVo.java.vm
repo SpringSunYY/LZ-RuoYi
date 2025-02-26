@@ -57,7 +57,7 @@ public class ${ClassName}Vo implements Serializable
  * 对象转封装类
  *
  * @param ${className}
- * @return
+ * @return ${ClassName}Vo
  */
     public static ${ClassName}Vo objToVo(${ClassName} ${className}) {
         if (${className} == null) {

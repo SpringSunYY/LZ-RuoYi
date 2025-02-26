@@ -55,15 +55,15 @@ public class ${ClassName}Edit implements Serializable
     /**
      * 对象转封装类
      *
-     * @param ${className}
-     * @return
+     * @param ${className}Edit
+     * @return ${ClassName}
      */
-    public static ${ClassName}Edit objToEdit(${ClassName} ${className}) {
-        if (${className} == null) {
+    public static ${ClassName} editToObj(${ClassName}Edit ${className}Edit) {
+        if (${className}Edit == null) {
             return null;
         }
-            ${ClassName}Edit ${className}Edit = new ${ClassName}Edit();
-        BeanUtils.copyProperties(${className}, ${className}Edit);
-        return ${className}Edit;
+        ${ClassName} ${className} = new ${ClassName}();
+        BeanUtils.copyProperties(${className}Edit, ${className});
+        return ${className};
     }
 }
