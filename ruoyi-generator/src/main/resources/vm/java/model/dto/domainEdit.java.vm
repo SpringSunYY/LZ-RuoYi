@@ -55,7 +55,7 @@ public class ${ClassName}Edit implements Serializable
     /**
      * 对象转封装类
      *
-     * @param ${className}Edit
+     * @param ${className}Edit 编辑对象
      * @return ${ClassName}
      */
     public static ${ClassName} editToObj(${ClassName}Edit ${className}Edit) {
