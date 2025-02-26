@@ -19,6 +19,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import ${packageName}.model.domain.${ClassName};
 import ${packageName}.model.vo.${className}.${ClassName}Vo;
+import ${packageName}.model.dto.${className}.${ClassName}Query;
 import ${packageName}.service.I${ClassName}Service;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 #if($table.crud || $table.sub)
@@ -28,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * ${functionName}Controller
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
@@ -45,15 +46,20 @@ public class ${ClassName}Controller extends BaseController
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:list')")
     @GetMapping("/list")
 #if($table.crud || $table.sub)
-    public TableDataInfo list(${ClassName} ${className})
+    public TableDataInfo list(${ClassName}Query ${className}Query)
     {
+        ${ClassName} ${className} = ${ClassName}Query.queryToObj(${className}Query);
         startPage();
         List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        return getDataTable(list);
+        List<${ClassName}Vo> listVo= list.stream().map(${ClassName}Vo::objToVo).collect(Collectors.toList());
+        TableDataInfo table = getDataTable(list);
+        table.setRows(listVo);
+        return table;
     }
 #elseif($table.tree)
     public AjaxResult list(${ClassName} ${className})
     {
+        ${ClassName} ${className} = ${ClassName}Query.queryToObj(${className}Query);
         List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
         List<${ClassName}Vo> listVo= list.stream().map(${ClassName}Vo::objToVo).collect(Collectors.toList());
         return success(listVo);
