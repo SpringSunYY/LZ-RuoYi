@@ -136,6 +136,8 @@ public class VelocityUtils {
         templates.add("vm/java/model/domain/domain.java.vm");
         templates.add("vm/java/model/vo/domainVo.java.vm");
         templates.add("vm/java/model/dto/domainQuery.java.vm");
+        templates.add("vm/java/model/dto/domainInsert.java.vm");
+        templates.add("vm/java/model/dto/domainEdit.java.vm");
         templates.add("vm/java/mapper.java.vm");
         templates.add("vm/java/service.java.vm");
         templates.add("vm/java/serviceImpl.java.vm");
@@ -183,6 +185,12 @@ public class VelocityUtils {
         }
         if (template.contains("domainQuery.java.vm")) {
             fileName = StringUtils.format("{}/model/dto/{}/{}.java", javaPath, classnameLower, className + "Query");
+        }
+        if (template.contains("domainEdit.java.vm")) {
+            fileName = StringUtils.format("{}/model/dto/{}/{}.java", javaPath, classnameLower, className + "Edit");
+        }
+        if (template.contains("domainInsert.java.vm")) {
+            fileName = StringUtils.format("{}/model/dto/{}/{}.java", javaPath, classnameLower, className + "Insert");
         }
         if (template.contains("sub-domain.java.vm") && StringUtils.equals(GenConstants.TPL_SUB, genTable.getTplCategory())) {
             fileName = StringUtils.format("{}/model/domain/{}.java", javaPath, genTable.getSubTable().getClassName());

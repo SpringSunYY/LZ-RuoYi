@@ -1,19 +1,15 @@
 package ${packageName}.model.dto.${className};
 
-import java.util.Map;
 import java.io.Serializable;
 #foreach ($import in $importList)
 import ${import};
 #end
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.BeanUtils;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.baomidou.mybatisplus.annotation.TableField;
 import ${packageName}.model.domain.${ClassName};
 /**
- * ${functionName}Query对象 ${tableName}
+ * ${functionName}Vo对象 ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
@@ -24,12 +20,12 @@ import ${packageName}.model.domain.${ClassName};
 #set($Entity="TreeEntity")
 #end
 @Data
-public class ${ClassName}Query implements Serializable
+public class ${ClassName}Insert implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-#if($column.isQuery.equals("1"))
+#if($column.isInsert.equals("1"))
     /** $column.columnComment */
 #if($column.list)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -56,23 +52,18 @@ public class ${ClassName}Query implements Serializable
     private List<${subClassName}> ${subclassName}List;
 
 #end
-    /** 请求参数 */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @TableField(exist = false)
-    private Map<String, Object> params;
-
     /**
      * 对象转封装类
      *
      * @param ${className}
      * @return
      */
-    public static ${ClassName}Query objToQuery(${ClassName} ${className}) {
+    public static ${ClassName}Insert objToInsert(${ClassName} ${className}) {
         if (${className} == null) {
             return null;
         }
-            ${ClassName}Query ${className}Query = new ${ClassName}Query();
-        BeanUtils.copyProperties(${className}, ${className}Query);
-        return ${className}Query;
+            ${ClassName}Insert ${className}Insert = new ${ClassName}Insert();
+        BeanUtils.copyProperties(${className}, ${className}Insert);
+        return ${className}Insert;
     }
 }

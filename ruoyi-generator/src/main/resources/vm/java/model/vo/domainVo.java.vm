@@ -6,7 +6,8 @@ import ${import};
 #end
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
-
+import org.springframework.beans.BeanUtils;
+import ${packageName}.model.domain.${ClassName};
 /**
  * ${functionName}Vo对象 ${tableName}
  *
@@ -51,4 +52,19 @@ public class ${ClassName}Vo implements Serializable
     private List<${subClassName}> ${subclassName}List;
 
 #end
+
+ /**
+ * 对象转封装类
+ *
+ * @param ${className}
+ * @return
+ */
+    public static ${ClassName}Vo objToVo(${ClassName} ${className}) {
+        if (${className} == null) {
+            return null;
+        }
+        ${ClassName}Vo ${className}Vo = new ${ClassName}Vo();
+        BeanUtils.copyProperties(${className}, ${className}Vo);
+        return ${className}Vo;
+    }
 }
