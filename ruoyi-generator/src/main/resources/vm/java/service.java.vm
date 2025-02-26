@@ -1,15 +1,16 @@
 package ${packageName}.service;
 
 import java.util.List;
-import ${packageName}.domain.${ClassName};
+import ${packageName}.model.domain.${ClassName};
 
+import com.baomidou.mybatisplus.extension.service.IService;
 /**
  * ${functionName}Service接口
  * 
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service 
+public interface I${ClassName}Service extends IService<${ClassName}>
 {
     /**
      * 查询${functionName}
