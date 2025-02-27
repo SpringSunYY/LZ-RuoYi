@@ -184,7 +184,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     public QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}Query ${className}Query){
         QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper<>();
         //如果不使用params可以删除
-        Map<String, Object> params = scheduleInfoQuery.getParams();
+        Map<String, Object> params = ${className}Query.getParams();
         if (StringUtils.isNull(params)) {
             params = new HashMap<>();
         }
