@@ -9,6 +9,480 @@
 	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
+
+## 增加功能
+
+在不影响若依原本功能基础上，集成mybatisPlus、lombok、数据批量插入、优化前端代码生成
+
+1. 集成mybatisPlus 3.5.9
+2. 集成lombok 1.18.24
+3. 根据lombok、mybatisPlus与业务生成对应的dto和vo
+4. 生成lombok和mybatisPlus的代码
+5. 优化web前端生成，如果是文件类型生成的代码列表可以直接下载，动态显隐列，长文本内容可以隐藏
+6. 批量生成数据
+
+### 集成mybatisPlus 3.5.9与lombok 1.18.24
+
+```xml
+        <lombok.version>1.18.24</lombok.version>
+        <mybatis-plus.version>3.5.9</mybatis-plus.version>
+```
+
+```xml
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+```
+
+### 根据lombok、mybatisPlus与业务生成对应的dto和vo
+
+![image-20250227112112873](assets/image-20250227112112873.png)
+
+**实体**
+
+```java
+package com.ruoyi.test.model.domain;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import com.ruoyi.common.annotation.Excel;
+import com.fasterxml.jackson.annotation.JsonInclude;
+/**
+ * 位置信息对象 tb_address_info
+ *
+ * @author ruoyi
+ * @date 2025-02-26
+ */
+@TableName("tb_address_info")
+@Data
+public class AddressInfo implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+
+    /** 编号 */
+    @Excel(name = "编号")
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private Long id;
+
+    /** 父级编号 */
+    @Excel(name = "父级编号")
+    private Long parentId;
+
+    /** 位置名称 */
+    @Excel(name = "位置名称")
+    private String name;
+
+    /** 类型 */
+    @Excel(name = "类型")
+    private String addressType;
+
+    /** 图片 */
+    @Excel(name = "图片")
+    private String imageInfo;
+
+    /** 文件 */
+    @Excel(name = "文件")
+    private String fileInfo;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private String status;
+
+    /** 创建人 */
+    @Excel(name = "创建人")
+    private Long userId;
+
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date createTime;
+
+    /** 更新时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date updateTime;
+
+    /** 请求参数 */
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @TableField(exist = false)
+    private Map<String, Object> params;
+}
+
+```
+
+**VO** 
+
+```java
+package com.ruoyi.test.model.vo.addressInfo;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import com.ruoyi.common.annotation.Excel;
+import org.springframework.beans.BeanUtils;
+import com.ruoyi.test.model.domain.AddressInfo;
+
+/**
+ * 位置信息Vo对象 tb_address_info
+ *
+ * @author ruoyi
+ * @date 2025-02-26
+ */
+@Data
+public class AddressInfoVo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 编号
+     */
+    @Excel(name = "编号")
+    private Long id;
+
+    /**
+     * 父级编号
+     */
+    @Excel(name = "父级编号")
+    private Long parentId;
+
+    /**
+     * 位置名称
+     */
+    @Excel(name = "位置名称")
+    private String name;
+
+    /**
+     * 类型
+     */
+    @Excel(name = "类型")
+    private String addressType;
+
+    /**
+     * 图片
+     */
+    @Excel(name = "图片")
+    private String imageInfo;
+
+    /**
+     * 文件
+     */
+    @Excel(name = "文件")
+    private String fileInfo;
+
+    /**
+     * 备注
+     */
+    @Excel(name = "备注")
+    private String remark;
+
+    /**
+     * 状态
+     */
+    @Excel(name = "状态")
+    private String status;
+
+    /**
+     * 创建人
+     */
+    @Excel(name = "创建人")
+    private Long userId;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间" , width = 30, dateFormat = "yyyy-MM-dd")
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "更新时间" , width = 30, dateFormat = "yyyy-MM-dd")
+    private Date updateTime;
+
+
+    /**
+     * 对象转封装类
+     *
+     * @param addressInfo AddressInfo实体对象
+     * @return AddressInfoVo
+     */
+    public static AddressInfoVo objToVo(AddressInfo addressInfo) {
+        if (addressInfo == null) {
+            return null;
+        }
+        AddressInfoVo addressInfoVo = new AddressInfoVo();
+        BeanUtils.copyProperties(addressInfo, addressInfoVo);
+        return addressInfoVo;
+    }
+}
+
+```
+
+**编辑DTO**
+
+```java
+package com.ruoyi.test.model.dto.addressInfo;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import com.ruoyi.common.annotation.Excel;
+import org.springframework.beans.BeanUtils;
+import com.ruoyi.test.model.domain.AddressInfo;
+/**
+ * 位置信息Vo对象 tb_address_info
+ *
+ * @author ruoyi
+ * @date 2025-02-26
+ */
+@Data
+public class AddressInfoEdit implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+
+    /** 编号 */
+    @Excel(name = "编号")
+    private Long id;
+
+    /** 父级编号 */
+    @Excel(name = "父级编号")
+    private Long parentId;
+
+    /** 位置名称 */
+    @Excel(name = "位置名称")
+    private String name;
+
+    /** 类型 */
+    @Excel(name = "类型")
+    private String addressType;
+
+    /** 图片 */
+    @Excel(name = "图片")
+    private String imageInfo;
+
+    /** 文件 */
+    @Excel(name = "文件")
+    private String fileInfo;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private String status;
+
+    /** 创建人 */
+    @Excel(name = "创建人")
+    private Long userId;
+
+    /**
+     * 对象转封装类
+     *
+     * @param addressInfoEdit 编辑对象
+     * @return AddressInfo
+     */
+    public static AddressInfo editToObj(AddressInfoEdit addressInfoEdit) {
+        if (addressInfoEdit == null) {
+            return null;
+        }
+        AddressInfo addressInfo = new AddressInfo();
+        BeanUtils.copyProperties(addressInfoEdit, addressInfo);
+        return addressInfo;
+    }
+}
+
+```
+
+**插入DTO**
+
+```java
+package com.ruoyi.test.model.dto.addressInfo;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import com.ruoyi.common.annotation.Excel;
+import org.springframework.beans.BeanUtils;
+import com.ruoyi.test.model.domain.AddressInfo;
+/**
+ * 位置信息Vo对象 tb_address_info
+ *
+ * @author ruoyi
+ * @date 2025-02-26
+ */
+@Data
+public class AddressInfoInsert implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+
+    /** 编号 */
+    @Excel(name = "编号")
+    private Long id;
+
+    /** 父级编号 */
+    @Excel(name = "父级编号")
+    private Long parentId;
+
+    /** 位置名称 */
+    @Excel(name = "位置名称")
+    private String name;
+
+    /** 类型 */
+    @Excel(name = "类型")
+    private String addressType;
+
+    /** 图片 */
+    @Excel(name = "图片")
+    private String imageInfo;
+
+    /** 文件 */
+    @Excel(name = "文件")
+    private String fileInfo;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private String status;
+
+    /** 创建人 */
+    @Excel(name = "创建人")
+    private Long userId;
+
+    /**
+     * 对象转封装类
+     *
+     * @param addressInfoInsert 插入对象
+     * @return AddressInfoInsert
+     */
+    public static AddressInfo insertToObj(AddressInfoInsert addressInfoInsert) {
+        if (addressInfoInsert == null) {
+            return null;
+        }
+        AddressInfo addressInfo = new AddressInfo();
+        BeanUtils.copyProperties(addressInfoInsert, addressInfo);
+        return addressInfo;
+    }
+}
+
+```
+
+**查询DTO**
+
+```java
+package com.ruoyi.test.model.dto.addressInfo;
+
+import java.util.Map;
+import java.io.Serializable;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import com.ruoyi.common.annotation.Excel;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.beans.BeanUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.ruoyi.test.model.domain.AddressInfo;
+/**
+ * 位置信息Query对象 tb_address_info
+ *
+ * @author ruoyi
+ * @date 2025-02-26
+ */
+@Data
+public class AddressInfoQuery implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+
+    /** 父级编号 */
+    @Excel(name = "父级编号")
+    private Long parentId;
+
+    /** 位置名称 */
+    @Excel(name = "位置名称")
+    private String name;
+
+    /** 类型 */
+    @Excel(name = "类型")
+    private String addressType;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private String status;
+
+    /** 创建人 */
+    @Excel(name = "创建人")
+    private Long userId;
+
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date createTime;
+
+    /** 更新时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date updateTime;
+
+    /** 请求参数 */
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @TableField(exist = false)
+    private Map<String, Object> params;
+
+    /**
+     * 对象转封装类
+     *
+     * @param addressInfoQuery 查询对象
+     * @return AddressInfo
+     */
+    public static AddressInfo queryToObj(AddressInfoQuery addressInfoQuery) {
+        if (addressInfoQuery == null) {
+            return null;
+        }
+        AddressInfo addressInfo = new AddressInfo();
+        BeanUtils.copyProperties(addressInfoQuery, addressInfo);
+        return addressInfo;
+    }
+}
+
+```
+
+### 前端页面优化展示
+
+![image-20250227112620456](assets/image-20250227112620456.png)
+
+### 批量插入
+
+![image-20250227112750064](assets/image-20250227112750064.png)
+
 ## 平台简介
 
 若依是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
