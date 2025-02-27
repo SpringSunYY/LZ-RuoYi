@@ -10,6 +10,12 @@
 </p>
 
 
+## 介绍地址
+
+B站 https://www.bilibili.com/video/BV15V9AYgEvL/?share_source=copy_web&vd_source=a4c1f9a58f1a8dd2e581c0f88e037fca
+
+抖音 https://v.douyin.com/i5jgjvss/ 
+
 ## 增加功能
 
 在不影响若依原本功能基础上，集成mybatisPlus、lombok、数据批量插入、优化前端代码生成
