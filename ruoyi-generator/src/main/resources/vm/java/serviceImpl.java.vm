@@ -1,6 +1,12 @@
 package ${packageName}.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import com.ruoyi.common.utils.StringUtils;
+#foreach ($import in $importList)
+import ${import};
+#end
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
 import com.ruoyi.common.utils.DateUtils;
@@ -10,6 +16,7 @@ import com.ruoyi.common.utils.DateUtils;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 #if($table.sub)
 import java.util.ArrayList;
 import com.ruoyi.common.utils.StringUtils;
@@ -19,6 +26,7 @@ import ${packageName}.domain.${subClassName};
 import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.model.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.model.dto.${className}.${ClassName}Query;
 
 /**
  * ${functionName}Service业务层处理
@@ -32,6 +40,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     @Resource
     private ${ClassName}Mapper ${className}Mapper;
 
+    //region mybatis代码
     /**
      * 查询${functionName}
      * 
@@ -167,4 +176,44 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         }
     }
 #end
+    //endregion
+    @Override
+    public QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}Query ${className}Query){
+        QueryWrapper<${ClassName}> queryWrapper = new QueryWrapper<>();
+        //如果不使用params可以删除
+        Map<String, Object> params = scheduleInfoQuery.getParams();
+        if (StringUtils.isNull(params)) {
+            params = new HashMap<>();
+        }
+    #foreach($column in $columns)
+        #set($queryType=$column.queryType)
+        #set($javaField=$column.javaField)
+        #set($javaType=$column.javaType)
+        #set($columnName=$column.columnName)
+        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+        #if($column.query)
+        ${javaType} ${javaField} = ${className}Query.get${AttrName}();
+        #if(${queryType} == "EQ")
+        queryWrapper.eq(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+        #elseif(${queryType} == "LIKE")
+        queryWrapper.like(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+        #elseif(${queryType} == "GTE")
+        queryWrapper.gte(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+        #elseif(${queryType} == "GT")
+        queryWrapper.gt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+        #elseif(${queryType} == "LTE")
+        queryWrapper.gte("${columnName}",${javaField});
+        #elseif(${queryType} == "LT")
+        queryWrapper.lt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+        #elseif(${queryType} == "NE")
+        queryWrapper.ne("${columnName}",${javaField});
+        #elseif(${queryType} == "BETWEEN")
+        queryWrapper.between(StringUtils.isNotNull(params.get("begin$AttrName"))&&StringUtils.isNotNull(params.get("end$AttrName")),"${columnName}",params.get("begin$AttrName"),params.get("end$AttrName"));
+        #end
+
+        #end
+    #end
+        return queryWrapper;
+    }
+
 }
