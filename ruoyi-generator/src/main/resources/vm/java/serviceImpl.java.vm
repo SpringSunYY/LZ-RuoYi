@@ -1,8 +1,10 @@
 package ${packageName}.service.impl;
 
+import java.util.*;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import com.ruoyi.common.utils.StringUtils;
 #foreach ($import in $importList)
 import ${import};
@@ -27,6 +29,7 @@ import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.model.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
 import ${packageName}.model.dto.${className}.${ClassName}Query;
+import ${packageName}.model.vo.${className}.${ClassName}Vo;
 
 /**
  * ${functionName}Service业务层处理
@@ -214,6 +217,14 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         #end
     #end
         return queryWrapper;
+    }
+
+    @Override
+    public List<${ClassName}Vo> convertVoList(List<${ClassName}> ${className}List) {
+        if (StringUtils.isEmpty(${className}List)) {
+            return Collections.emptyList();
+        }
+        return ${className}List.stream().map(${ClassName}Vo::objToVo).collect(Collectors.toList());
     }
 
 }

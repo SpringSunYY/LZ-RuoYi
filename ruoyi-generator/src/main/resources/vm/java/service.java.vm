@@ -2,6 +2,7 @@ package ${packageName}.service;
 
 import java.util.List;
 import ${packageName}.model.domain.${ClassName};
+import ${packageName}.model.vo.${ClassName}Vo;
 import ${packageName}.model.dto.${className}.${ClassName}Query;
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -67,7 +68,15 @@ public interface I${ClassName}Service extends IService<${ClassName}>
      * 获取查询条件
      *
      * @param ${className}Query 查询条件对象
-     * @return
+     * @return 查询条件
      */
     QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}Query ${className}Query);
+
+    /**
+     * 转换vo
+     *
+     * @param ${className}List ${ClassName}集合
+     * @return ${ClassName}VO集合
+     */
+    List<${ClassName}Vo> convertVoList(List<${ClassName}> ${className}List});
 }
