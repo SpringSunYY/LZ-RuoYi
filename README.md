@@ -67,7 +67,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 位置信息对象 tb_address_info
  *
  * @author ruoyi
- * @date 2025-02-26
+ * @date 2025-02-27
  */
 @TableName("tb_address_info")
 @Data
@@ -137,98 +137,75 @@ package com.ruoyi.test.model.vo.addressInfo;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
 import org.springframework.beans.BeanUtils;
 import com.ruoyi.test.model.domain.AddressInfo;
-
 /**
  * 位置信息Vo对象 tb_address_info
  *
  * @author ruoyi
- * @date 2025-02-26
+ * @date 2025-02-27
  */
 @Data
-public class AddressInfoVo implements Serializable {
+public class AddressInfoVo implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 编号
-     */
+    /** 编号 */
     @Excel(name = "编号")
     private Long id;
 
-    /**
-     * 父级编号
-     */
+    /** 父级编号 */
     @Excel(name = "父级编号")
     private Long parentId;
 
-    /**
-     * 位置名称
-     */
+    /** 位置名称 */
     @Excel(name = "位置名称")
     private String name;
 
-    /**
-     * 类型
-     */
+    /** 类型 */
     @Excel(name = "类型")
     private String addressType;
 
-    /**
-     * 图片
-     */
+    /** 图片 */
     @Excel(name = "图片")
     private String imageInfo;
 
-    /**
-     * 文件
-     */
+    /** 文件 */
     @Excel(name = "文件")
     private String fileInfo;
 
-    /**
-     * 备注
-     */
+    /** 备注 */
     @Excel(name = "备注")
     private String remark;
 
-    /**
-     * 状态
-     */
+    /** 状态 */
     @Excel(name = "状态")
     private String status;
 
-    /**
-     * 创建人
-     */
+    /** 创建人 */
     @Excel(name = "创建人")
     private Long userId;
 
-    /**
-     * 创建时间
-     */
+    /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间" , width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createTime;
 
-    /**
-     * 更新时间
-     */
+    /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间" , width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updateTime;
 
 
-    /**
-     * 对象转封装类
-     *
-     * @param addressInfo AddressInfo实体对象
-     * @return AddressInfoVo
-     */
+ /**
+ * 对象转封装类
+ *
+ * @param addressInfo AddressInfo实体对象
+ * @return AddressInfoVo
+ */
     public static AddressInfoVo objToVo(AddressInfo addressInfo) {
         if (addressInfo == null) {
             return null;
@@ -250,14 +227,13 @@ import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import com.ruoyi.common.annotation.Excel;
 import org.springframework.beans.BeanUtils;
 import com.ruoyi.test.model.domain.AddressInfo;
 /**
  * 位置信息Vo对象 tb_address_info
  *
  * @author ruoyi
- * @date 2025-02-26
+ * @date 2025-02-27
  */
 @Data
 public class AddressInfoEdit implements Serializable
@@ -265,39 +241,30 @@ public class AddressInfoEdit implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 编号 */
-    @Excel(name = "编号")
     private Long id;
 
     /** 父级编号 */
-    @Excel(name = "父级编号")
     private Long parentId;
 
     /** 位置名称 */
-    @Excel(name = "位置名称")
     private String name;
 
     /** 类型 */
-    @Excel(name = "类型")
     private String addressType;
 
     /** 图片 */
-    @Excel(name = "图片")
     private String imageInfo;
 
     /** 文件 */
-    @Excel(name = "文件")
     private String fileInfo;
 
     /** 备注 */
-    @Excel(name = "备注")
     private String remark;
 
     /** 状态 */
-    @Excel(name = "状态")
     private String status;
 
     /** 创建人 */
-    @Excel(name = "创建人")
     private Long userId;
 
     /**
@@ -315,7 +282,6 @@ public class AddressInfoEdit implements Serializable
         return addressInfo;
     }
 }
-
 ```
 
 **插入DTO**
@@ -327,14 +293,13 @@ import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import com.ruoyi.common.annotation.Excel;
 import org.springframework.beans.BeanUtils;
 import com.ruoyi.test.model.domain.AddressInfo;
 /**
  * 位置信息Vo对象 tb_address_info
  *
  * @author ruoyi
- * @date 2025-02-26
+ * @date 2025-02-27
  */
 @Data
 public class AddressInfoInsert implements Serializable
@@ -342,39 +307,30 @@ public class AddressInfoInsert implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 编号 */
-    @Excel(name = "编号")
     private Long id;
 
     /** 父级编号 */
-    @Excel(name = "父级编号")
     private Long parentId;
 
     /** 位置名称 */
-    @Excel(name = "位置名称")
     private String name;
 
     /** 类型 */
-    @Excel(name = "类型")
     private String addressType;
 
     /** 图片 */
-    @Excel(name = "图片")
     private String imageInfo;
 
     /** 文件 */
-    @Excel(name = "文件")
     private String fileInfo;
 
     /** 备注 */
-    @Excel(name = "备注")
     private String remark;
 
     /** 状态 */
-    @Excel(name = "状态")
     private String status;
 
     /** 创建人 */
-    @Excel(name = "创建人")
     private Long userId;
 
     /**
@@ -405,7 +361,6 @@ import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import com.ruoyi.common.annotation.Excel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.BeanUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -415,7 +370,7 @@ import com.ruoyi.test.model.domain.AddressInfo;
  * 位置信息Query对象 tb_address_info
  *
  * @author ruoyi
- * @date 2025-02-26
+ * @date 2025-02-27
  */
 @Data
 public class AddressInfoQuery implements Serializable
@@ -423,33 +378,26 @@ public class AddressInfoQuery implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 父级编号 */
-    @Excel(name = "父级编号")
     private Long parentId;
 
     /** 位置名称 */
-    @Excel(name = "位置名称")
     private String name;
 
     /** 类型 */
-    @Excel(name = "类型")
     private String addressType;
 
     /** 状态 */
-    @Excel(name = "状态")
     private String status;
 
     /** 创建人 */
-    @Excel(name = "创建人")
     private Long userId;
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createTime;
 
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updateTime;
 
     /** 请求参数 */
