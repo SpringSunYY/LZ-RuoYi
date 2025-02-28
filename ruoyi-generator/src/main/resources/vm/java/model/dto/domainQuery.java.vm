@@ -6,6 +6,7 @@ import java.io.Serializable;
 import ${import};
 #end
 import lombok.Data;
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.BeanUtils;
