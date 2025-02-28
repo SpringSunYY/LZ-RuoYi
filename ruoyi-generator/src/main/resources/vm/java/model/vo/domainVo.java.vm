@@ -7,6 +7,7 @@ import ${import};
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
 import org.springframework.beans.BeanUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ${packageName}.model.domain.${ClassName};
 /**
  * ${functionName}Vo对象 ${tableName}
