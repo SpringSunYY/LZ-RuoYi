@@ -16,6 +16,10 @@ B站 https://www.bilibili.com/video/BV15V9AYgEvL/?share_source=copy_web&vd_sourc
 
 抖音 https://v.douyin.com/i5jgjvss/ 
 
+![1](assets/1.png)
+
+![2](assets/2.png)
+
 ## 增加功能
 
 在不影响若依原本功能基础上，集成mybatisPlus、lombok、数据批量插入、优化前端代码生成

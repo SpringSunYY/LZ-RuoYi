@@ -181,8 +181,8 @@ public class DataScopeAspect {
                     paramsMap = new HashMap<>();
                 }
                 paramsMap.put(DATA_SCOPE, "");
-                System.err.println("params = " + params);
-                System.out.println("paramsMap = " + paramsMap);
+//                System.err.println("params = " + params);
+//                System.out.println("paramsMap = " + paramsMap);
             } catch (Exception e) {
                 // 异常处理：记录日志或抛出自定义异常
                 throw new RuntimeException("Failed to clear data scope in params", e);
