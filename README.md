@@ -488,6 +488,120 @@ public @interface CustomCacheEvict {
 }
 ```
 
+### 2.自定义排序
+
+1. 注解
+
+```java
+/**
+ * 自定义排序注解
+ * 首先我希望我变好，也希望你
+ *
+ * @Author: YY
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface CustomSort {
+    /*
+       createTime-create_time,这样一一对应，对应数据库字段
+     */
+    String[] sortFields() default {};   //排序字段，就是你前端传过来的字段，一一对应
+
+    String[] sortMappingFields() default {}; //映射字段，前端只需要传过来字段名，如果多表查询设置映射字段，映射字段为查询时所需字段
+}
+```
+
+2. 查询mapper
+
+```sql
+        <choose>
+            <when test="params.sortSql != null and params.sortSql != ''">
+                ${params.sortSql}
+            </when>
+            <otherwise>
+                order by create_time desc
+            </otherwise>
+        </choose>
+```
+
+3. 使用
+
+```java
+    @CustomSort(
+            sortFields = {"usageCount", "lookCount", "downloadCount", "createTime", "updateTime", "orderNum"},
+            sortMappingFields = {
+                    "usage_count", "look_count", "download_count", "create_time", "update_time", "order_num"
+            })
+    @Override
+    public List<PictureCategoryInfo> selectPictureCategoryInfoList(PictureCategoryInfo pictureCategoryInfo) {
+        return pictureCategoryInfoMapper.selectPictureCategoryInfoList(pictureCategoryInfo);
+    }
+```
+
+4. 前端使用，此注解当前主要使用在管理端，目前演示的是vue3，如果vue2也可以参考这个，具体实现需要自己去实现
+
+5. 在el-table加上@sort-change="customSort"自定义排序方法和ref
+
+```js
+    <el-table ref="tableRef" v-loading="loading" :data="accountInfoList" @selection-change="handleSelectionChange" @sort-change="customSort">
+```
+
+2. 在字段加上自定义排序标志
+
+```js
+      <el-table-column label="充值总金额" align="center" prop="rechargeAmount" sortable="custom"
+                       v-if="columns[6].visible" :show-overflow-tooltip="true"/>
+```
+
+5. 排序字段
+
+```js
+const isAsc = ref();
+const orderByColumn = ref('');
+```
+
+6. 新增方法
+
+```js
+//自定义排序
+function customSort({column, prop, order}) {
+  if (prop !== undefined && prop !== '' && order !== null && order !== '') {
+    orderByColumn.value = prop;
+    isAsc.value = order === "ascending";
+  } else {
+    orderByColumn.value = null;
+    isAsc.value = null;
+  }
+  queryParams.value.pageNum = 1;
+  getList();
+}
+```
+
+7. 在getList添加
+
+```js
+  if (orderByColumn.value != null && isAsc.value !== null) {
+    queryParams.value.params["orderByColumn"] = orderByColumn.value;
+    queryParams.value.params["isAsc"] = isAsc.value;
+  }
+```
+
+8. 在重置按钮更新ref
+
+```js
+/** 重置按钮操作 */
+function resetQuery() {
+  daterangeCreateTime.value = [];
+  daterangeUpdateTime.value = [];
+  orderByColumn.value = null
+  isAsc.value = null;
+  proxy.resetForm("queryRef");
+  proxy.$refs.tableRef.clearSort();
+  handleQuery();
+}
+```
+
 
 
 ## 平台简介
