@@ -1,4 +1,4 @@
-
+const baseURL = process.env.VUE_APP_BASE_API
 
 /**
  * 通用js方法封装处理
@@ -18,7 +18,7 @@ export function parseTime(time, pattern) {
     if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
       time = parseInt(time)
     } else if (typeof time === 'string') {
-      time = time.replace(new RegExp(/-/gm), '/').replace('T', ' ').replace(new RegExp(/\.[\d]{3}/gm), '');
+      time = time.replace(new RegExp(/-/gm), '/').replace('T', ' ').replace(new RegExp(/\.[\d]{3}/gm), '')
     }
     if ((typeof time === 'number') && (time.toString().length === 10)) {
       time = time * 1000
@@ -37,7 +37,9 @@ export function parseTime(time, pattern) {
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     if (result.length > 0 && value < 10) {
       value = '0' + value
     }
@@ -49,89 +51,89 @@ export function parseTime(time, pattern) {
 // 表单重置
 export function resetForm(refName) {
   if (this.$refs[refName]) {
-    this.$refs[refName].resetFields();
+    this.$refs[refName].resetFields()
   }
 }
 
 // 添加日期范围
 export function addDateRange(params, dateRange, propName) {
-  let search = params;
-  search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
-  dateRange = Array.isArray(dateRange) ? dateRange : [];
+  let search = params
+  search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {}
+  dateRange = Array.isArray(dateRange) ? dateRange : []
   if (typeof (propName) === 'undefined') {
-    search.params['beginTime'] = dateRange[0];
-    search.params['endTime'] = dateRange[1];
+    search.params['beginTime'] = dateRange[0]
+    search.params['endTime'] = dateRange[1]
   } else {
-    search.params['begin' + propName] = dateRange[0];
-    search.params['end' + propName] = dateRange[1];
+    search.params['begin' + propName] = dateRange[0]
+    search.params['end' + propName] = dateRange[1]
   }
-  return search;
+  return search
 }
 
 // 回显数据字典
 export function selectDictLabel(datas, value) {
   if (value === undefined) {
-    return "";
+    return ''
   }
-  var actions = [];
+  var actions = []
   Object.keys(datas).some((key) => {
     if (datas[key].value == ('' + value)) {
-      actions.push(datas[key].label);
-      return true;
+      actions.push(datas[key].label)
+      return true
     }
   })
   if (actions.length === 0) {
-    actions.push(value);
+    actions.push(value)
   }
-  return actions.join('');
+  return actions.join('')
 }
 
 // 回显数据字典（字符串、数组）
 export function selectDictLabels(datas, value, separator) {
-  if (value === undefined || value.length ===0) {
-    return "";
+  if (value === undefined || value.length === 0) {
+    return ''
   }
   if (Array.isArray(value)) {
-    value = value.join(",");
+    value = value.join(',')
   }
-  var actions = [];
-  var currentSeparator = undefined === separator ? "," : separator;
-  var temp = value.split(currentSeparator);
+  var actions = []
+  var currentSeparator = undefined === separator ? ',' : separator
+  var temp = value.split(currentSeparator)
   Object.keys(value.split(currentSeparator)).some((val) => {
-    var match = false;
+    var match = false
     Object.keys(datas).some((key) => {
       if (datas[key].value == ('' + temp[val])) {
-        actions.push(datas[key].label + currentSeparator);
-        match = true;
+        actions.push(datas[key].label + currentSeparator)
+        match = true
       }
     })
     if (!match) {
-      actions.push(temp[val] + currentSeparator);
+      actions.push(temp[val] + currentSeparator)
     }
   })
-  return actions.join('').substring(0, actions.join('').length - 1);
+  return actions.join('').substring(0, actions.join('').length - 1)
 }
 
 // 字符串格式化(%s )
 export function sprintf(str) {
-  var args = arguments, flag = true, i = 1;
-  str = str.replace(/%s/g, function () {
-    var arg = args[i++];
+  var args = arguments, flag = true, i = 1
+  str = str.replace(/%s/g, function() {
+    var arg = args[i++]
     if (typeof arg === 'undefined') {
-      flag = false;
-      return '';
+      flag = false
+      return ''
     }
-    return arg;
-  });
-  return flag ? str : '';
+    return arg
+  })
+  return flag ? str : ''
 }
 
 // 转换字符串，undefined,null等转化为""
 export function parseStrEmpty(str) {
-  if (!str || str == "undefined" || str == "null") {
-    return "";
+  if (!str || str == 'undefined' || str == 'null') {
+    return ''
   }
-  return str;
+  return str
 }
 
 // 数据合并
@@ -139,16 +141,16 @@ export function mergeRecursive(source, target) {
   for (var p in target) {
     try {
       if (target[p].constructor == Object) {
-        source[p] = mergeRecursive(source[p], target[p]);
+        source[p] = mergeRecursive(source[p], target[p])
       } else {
-        source[p] = target[p];
+        source[p] = target[p]
       }
     } catch (e) {
-      source[p] = target[p];
+      source[p] = target[p]
     }
   }
-  return source;
-};
+  return source
+}
 
 /**
  * 构造树型结构数据
@@ -162,65 +164,66 @@ export function handleTree(data, id, parentId, children) {
     id: id || 'id',
     parentId: parentId || 'parentId',
     childrenList: children || 'children'
-  };
+  }
 
-  var childrenListMap = {};
-  var nodeIds = {};
-  var tree = [];
+  var childrenListMap = {}
+  var nodeIds = {}
+  var tree = []
 
   for (let d of data) {
-    let parentId = d[config.parentId];
+    let parentId = d[config.parentId]
     if (childrenListMap[parentId] == null) {
-      childrenListMap[parentId] = [];
+      childrenListMap[parentId] = []
     }
-    nodeIds[d[config.id]] = d;
-    childrenListMap[parentId].push(d);
+    nodeIds[d[config.id]] = d
+    childrenListMap[parentId].push(d)
   }
 
   for (let d of data) {
-    let parentId = d[config.parentId];
+    let parentId = d[config.parentId]
     if (nodeIds[parentId] == null) {
-      tree.push(d);
+      tree.push(d)
     }
   }
 
   for (let t of tree) {
-    adaptToChildrenList(t);
+    adaptToChildrenList(t)
   }
 
   function adaptToChildrenList(o) {
     if (childrenListMap[o[config.id]] !== null) {
-      o[config.childrenList] = childrenListMap[o[config.id]];
+      o[config.childrenList] = childrenListMap[o[config.id]]
     }
     if (o[config.childrenList]) {
       for (let c of o[config.childrenList]) {
-        adaptToChildrenList(c);
+        adaptToChildrenList(c)
       }
     }
   }
-  return tree;
+
+  return tree
 }
 
 /**
-* 参数处理
-* @param {*} params  参数
-*/
+ * 参数处理
+ * @param {*} params  参数
+ */
 export function tansParams(params) {
   let result = ''
   for (const propName of Object.keys(params)) {
-    const value = params[propName];
-    var part = encodeURIComponent(propName) + "=";
-    if (value !== null && value !== "" && typeof (value) !== "undefined") {
+    const value = params[propName]
+    var part = encodeURIComponent(propName) + '='
+    if (value !== null && value !== '' && typeof (value) !== 'undefined') {
       if (typeof value === 'object') {
         for (const key of Object.keys(value)) {
-          if (value[key] !== null && value[key] !== "" && typeof (value[key]) !== 'undefined') {
-            let params = propName + '[' + key + ']';
-            var subPart = encodeURIComponent(params) + "=";
-            result += subPart + encodeURIComponent(value[key]) + "&";
+          if (value[key] !== null && value[key] !== '' && typeof (value[key]) !== 'undefined') {
+            let params = propName + '[' + key + ']'
+            var subPart = encodeURIComponent(params) + '='
+            result += subPart + encodeURIComponent(value[key]) + '&'
           }
         }
       } else {
-        result += part + encodeURIComponent(value) + "&";
+        result += part + encodeURIComponent(value) + '&'
       }
     }
   }
@@ -230,4 +233,24 @@ export function tansParams(params) {
 // 验证是否为blob格式
 export function blobValidate(data) {
   return data.type !== 'application/json'
+}
+
+//获取文件名
+export function getFileName(filePath) {
+  if (filePath == null) {
+    return
+  }
+  // 提取文件名或根据需求生成文件名
+  return filePath.substring(filePath.lastIndexOf('/') + 1)
+}
+
+//获取文件路径
+export function getFilePath(filePath) {
+  if (filePath == null) {
+    return
+  }
+  if (filePath.startsWith('http')) {
+    return filePath
+  }
+  return baseURL + filePath
 }
