@@ -159,26 +159,24 @@
           <div v-if="scope.row.${javaField}">
             <el-tooltip placement="top" effect="light">
               <div slot="content">
-                  <div v-for="(file,index) in scope.row.${javaField}.split(',')"
-                       :key="index"
-                       style="text-align: left;padding: 5px;">
-                    <el-link
-                       :download="getFileName(file)"
-                       :href="getFilePath(file)"
-                       :underline="false"
-                       target="_blank"
-                       style="font-size: 14px"
-                    >
+                <div v-for="(file,index) in scope.row.${javaField}.split(',')"
+                     :key="index"
+                     style="text-align: left;padding: 5px;">
+                  <el-link
+                     :download="getFileName(file)"
+                     :href="getFilePath(file)"
+                     :underline="'never'"
+                     target="_blank"
+                     style="font-size: 14px"
+                  >
                     <span style="cursor: pointer;"> {{ getFileName(file) }} </span>
                   </el-link>
-                  </div>
+                </div>
               </div>
               <span style="cursor: pointer; color: #409EFF;">查看文件</span>
             </el-tooltip>
           </div>
-          <div v-else>
-            -
-          </div>
+          <div v-else>-</div>
         </template>
       </el-table-column>
     #set($index = $index + 1)  ## 增加 index 的值

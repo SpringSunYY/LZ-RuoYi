@@ -5,7 +5,7 @@
 git clone https://gitee.com/y_project/RuoYi-Vue
 
 # 进入项目目录
-cd ruoyi-ui
+cd ruoyi-ui-vue2
 
 # 安装依赖
 npm install

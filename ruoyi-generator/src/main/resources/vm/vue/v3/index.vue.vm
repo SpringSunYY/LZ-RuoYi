@@ -144,6 +144,12 @@
                   <image-preview :src="scope.row.${javaField}" :width="50" :height="50"/>
                 </template>
               </el-table-column>
+            #elseif($column.list && $column.htmlType == "fileUpload")
+              <el-table-column label="${comment}" align="center" prop="${javaField}" width="100" v-if="columns[${index}].visible">
+                <template #default="scope">
+                  <file-view :file-url="scope.row.${javaField}"/>
+                </template>
+              </el-table-column>
             #elseif($column.list && "" != $column.dictType)
               <el-table-column label="${comment}" align="center" prop="${javaField}" v-if="columns[${index}].visible">
                 <template #default="scope">
@@ -664,7 +670,7 @@
     proxy.download(exportUrl.value, {
       ...queryParams.value
     }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
-  },
+  }
 #if($enableImport)
   /** 导入按钮操作 */
   function handleImport() {
@@ -674,7 +680,7 @@
   /** 下载模板操作 */
   function importTemplate() {
     proxy.download(upload.value.templateUrl, {
-    }, `${businessName}_template_${new Date().getTime()}.xlsx`)
+    }, `${businessName}_template_#[[${new Date().getTime()}]]#.xlsx`)
   }
   // 文件上传中处理
   function handleFileUploadProgress(event, file, fileList) {
