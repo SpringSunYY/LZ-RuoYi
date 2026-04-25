@@ -156,4 +156,11 @@ public class PermissionService
     {
         return permissions.contains(Constants.ALL_PERMISSION) || permissions.contains(StringUtils.trim(permission));
     }
+
+    /**
+     * 判断当前用户是否登录
+     */
+    public boolean hasLogin(){
+        return SecurityUtils.getLoginUser() != null;
+    }
 }

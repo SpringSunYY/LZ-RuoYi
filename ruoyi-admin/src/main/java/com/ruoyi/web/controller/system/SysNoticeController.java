@@ -46,7 +46,7 @@ public class SysNoticeController extends BaseController
     /**
      * 根据通知公告编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:notice:query')")
+    @PreAuthorize("@ss.hasLogin()")
     @GetMapping(value = "/{noticeId}")
     public AjaxResult getInfo(@PathVariable("noticeId") Long noticeId)
     {
@@ -108,6 +108,7 @@ public class SysNoticeController extends BaseController
      */
     @PostMapping("/markRead")
     @ResponseBody
+    @PreAuthorize("@ss.hasLogin()")
     public AjaxResult markRead(Long noticeId)
     {
         Long userId = getUserId();
@@ -120,6 +121,7 @@ public class SysNoticeController extends BaseController
      */
     @PostMapping("/markReadAll")
     @ResponseBody
+    @PreAuthorize("@ss.hasLogin()")
     public AjaxResult markReadAll(String ids)
     {
         Long userId = getUserId();

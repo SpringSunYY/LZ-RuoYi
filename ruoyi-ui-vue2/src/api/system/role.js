@@ -74,6 +74,14 @@ export function allocatedUserList(query) {
   })
 }
 
+export function allocatedUserListAll(query) {
+  return request({
+    url: '/system/role/authUser/allocatedList/all',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询角色未授权用户列表
 export function unallocatedUserList(query) {
   return request({
