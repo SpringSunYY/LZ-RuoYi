@@ -5,28 +5,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-import com.ruoyi.common.utils.StringUtils;
-#if($enableImport)
-#end
-#foreach ($import in $importList)
-import ${import};
-#end
-#foreach ($column in $columns)
-#if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
-import com.ruoyi.common.utils.DateUtils;
-#break
-#end
-#end
+import com.lz.common.utils.StringUtils;
+    #if($enableImport)
+    #end
+    #foreach ($import in $importList)
+    import ${import};
+    #end
+    #foreach ($column in $columns)
+        #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+        import com.lz.common.utils.DateUtils;
+            #break
+        #end
+    #end
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-#if($table.sub)
-import java.util.ArrayList;
-import com.ruoyi.common.utils.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
-import ${packageName}.domain.${subClassName};
-#end
+    #if($table.sub)
+    import java.util.ArrayList;
+    import com.lz.common.utils.StringUtils;
+    import org.springframework.transaction.annotation.Transactional;
+    import ${packageName}.model.domain.${subClassName};
+    #end
 import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.model.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
@@ -77,24 +77,24 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      * @param ${className} ${functionName}
      * @return 结果
      */
-#if($table.sub)
-    @Transactional
-#end
+        #if($table.sub)
+        @Transactional
+        #end
     @Override
     public int insert${ClassName}(${ClassName} ${className})
     {
-#foreach ($column in $columns)
-#if($column.javaField == 'createTime')
-        ${className}.setCreateTime(DateUtils.getNowDate());
-#end
-#end
-#if($table.sub)
-        int rows = ${className}Mapper.insert${ClassName}(${className});
-        insert${subClassName}(${className});
-        return rows;
-#else
-        return ${className}Mapper.insert${ClassName}(${className});
-#end
+        #foreach ($column in $columns)
+            #if($column.javaField == 'createTime')
+                ${className}.setCreateTime(DateUtils.getNowDate());
+            #end
+        #end
+        #if($table.sub)
+            int rows = ${className}Mapper.insert${ClassName}(${className});
+            insert${subClassName}(${className});
+            return rows;
+        #else
+            return ${className}Mapper.insert${ClassName}(${className});
+        #end
     }
 
     /**
@@ -103,21 +103,21 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      * @param ${className} ${functionName}
      * @return 结果
      */
-#if($table.sub)
-    @Transactional
-#end
+        #if($table.sub)
+        @Transactional
+        #end
     @Override
     public int update${ClassName}(${ClassName} ${className})
     {
-#foreach ($column in $columns)
-#if($column.javaField == 'updateTime')
-        ${className}.setUpdateTime(DateUtils.getNowDate());
-#end
-#end
-#if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
-        insert${subClassName}(${className});
-#end
+        #foreach ($column in $columns)
+            #if($column.javaField == 'updateTime')
+                ${className}.setUpdateTime(DateUtils.getNowDate());
+            #end
+        #end
+        #if($table.sub)
+                ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
+            insert${subClassName}(${className});
+        #end
         return ${className}Mapper.update${ClassName}(${className});
     }
 
@@ -127,15 +127,15 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      * @param ${pkColumn.javaField}s 需要删除的${functionName}主键
      * @return 结果
      */
-#if($table.sub)
-    @Transactional
-#end
+        #if($table.sub)
+        @Transactional
+        #end
     @Override
     public int delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaType}[] ${pkColumn.javaField}s)
     {
-#if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}s(${pkColumn.javaField}s);
-#end
+        #if($table.sub)
+                ${className}Mapper.delete${subClassName}By${subTableFkClassName}s(${pkColumn.javaField}s);
+        #end
         return ${className}Mapper.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s);
     }
 
@@ -145,43 +145,43 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      * @param ${pkColumn.javaField} ${functionName}主键
      * @return 结果
      */
-#if($table.sub)
-    @Transactional
-#end
+        #if($table.sub)
+        @Transactional
+        #end
     @Override
     public int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField})
     {
-#if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
-#end
+        #if($table.sub)
+                ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
+        #end
         return ${className}Mapper.delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
     }
-#if($table.sub)
+    #if($table.sub)
 
-    /**
-     * 新增${subTable.functionName}信息
-     *
-     * @param ${className} ${functionName}对象
-     */
-    public void insert${subClassName}(${ClassName} ${className})
-    {
-        List<${subClassName}> ${subclassName}List = ${className}.get${subClassName}List();
-        ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
-        if (StringUtils.isNotNull(${subclassName}List))
+        /**
+         * 新增${subTable.functionName}信息
+         *
+         * @param ${className} ${functionName}对象
+         */
+        public void insert${subClassName}(${ClassName} ${className})
         {
-            List<${subClassName}> list = new ArrayList<${subClassName}>();
-            for (${subClassName} ${subclassName} : ${subclassName}List)
+            List<${subClassName}> ${subclassName}List = ${className}.get${subClassName}List();
+            ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
+            if (StringUtils.isNotNull(${subclassName}List))
             {
-                ${subclassName}.set${subTableFkClassName}(${pkColumn.javaField});
-                list.add(${subclassName});
-            }
-            if (list.size() > 0)
-            {
-                ${className}Mapper.batch${subClassName}(list);
+                List<${subClassName}> list = new ArrayList<${subClassName}>();
+                for (${subClassName} ${subclassName} : ${subclassName}List)
+                {
+                    ${subclassName}.set${subTableFkClassName}(${pkColumn.javaField});
+                    list.add(${subclassName});
+                }
+                if (list.size() > 0)
+                {
+                        ${className}Mapper.batch${subClassName}(list);
+                }
             }
         }
-    }
-#end
+    #end
     //endregion
     @Override
     public QueryWrapper<${ClassName}> getQueryWrapper(${ClassName}Query ${className}Query){
@@ -191,34 +191,34 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         if (StringUtils.isNull(params)) {
             params = new HashMap<>();
         }
-    #foreach($column in $columns)
-        #set($queryType=$column.queryType)
-        #set($javaField=$column.javaField)
-        #set($javaType=$column.javaType)
-        #set($columnName=$column.columnName)
-        #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-        #if($column.query)
-        ${javaType} ${javaField} = ${className}Query.get${AttrName}();
-        #if(${queryType} == "EQ")
-        queryWrapper.eq(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
-        #elseif(${queryType} == "LIKE")
-        queryWrapper.like(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
-        #elseif(${queryType} == "GTE")
-        queryWrapper.gte(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
-        #elseif(${queryType} == "GT")
-        queryWrapper.gt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
-        #elseif(${queryType} == "LTE")
-        queryWrapper.gte("${columnName}",${javaField});
-        #elseif(${queryType} == "LT")
-        queryWrapper.lt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
-        #elseif(${queryType} == "NE")
-        queryWrapper.ne("${columnName}",${javaField});
-        #elseif(${queryType} == "BETWEEN")
-        queryWrapper.between(StringUtils.isNotNull(params.get("begin$AttrName"))&&StringUtils.isNotNull(params.get("end$AttrName")),"${columnName}",params.get("begin$AttrName"),params.get("end$AttrName"));
-        #end
+        #foreach($column in $columns)
+            #set($queryType=$column.queryType)
+            #set($javaField=$column.javaField)
+            #set($javaType=$column.javaType)
+            #set($columnName=$column.columnName)
+            #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+            #if($column.query)
+                ${javaType} ${javaField} = ${className}Query.get${AttrName}();
+                #if(${queryType} == "EQ")
+                    queryWrapper.eq(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+                #elseif(${queryType} == "LIKE")
+                    queryWrapper.like(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+                #elseif(${queryType} == "GTE")
+                    queryWrapper.gte(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+                #elseif(${queryType} == "GT")
+                    queryWrapper.gt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+                #elseif(${queryType} == "LTE")
+                    queryWrapper.gte("${columnName}",${javaField});
+                #elseif(${queryType} == "LT")
+                    queryWrapper.lt(#if($javaType == 'String' )StringUtils.isNotEmpty(${javaField}) #else StringUtils.isNotNull(${javaField})#end,"${columnName}",${javaField});
+                #elseif(${queryType} == "NE")
+                    queryWrapper.ne("${columnName}",${javaField});
+                #elseif(${queryType} == "BETWEEN")
+                    queryWrapper.between(StringUtils.isNotNull(params.get("begin$AttrName"))&&StringUtils.isNotNull(params.get("end$AttrName")),"${columnName}",params.get("begin$AttrName"),params.get("end$AttrName"));
+                #end
 
+            #end
         #end
-    #end
         return queryWrapper;
     }
 
@@ -229,88 +229,88 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
         }
         return ${className}List.stream().map(${ClassName}Vo::objToVo).collect(Collectors.toList());
     }
-#if($enableImport)
+    #if($enableImport)
 
-    /**
-     * 导入${functionName}数据
-     *
-     * @param ${className}List ${functionName}数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
-     * @return 结果
-     */
-    @Override
-    public String import${ClassName}Data(List<${ClassName}> ${className}List, Boolean isUpdateSupport, String operName)
-    {
-        if (StringUtils.isEmpty(${className}List))
+        /**
+         * 导入${functionName}数据
+         *
+         * @param ${className}List ${functionName}数据列表
+         * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+         * @param operName 操作用户
+         * @return 结果
+         */
+        @Override
+        public String import${ClassName}Data(List<${ClassName}> ${className}List, Boolean isUpdateSupport, String operName)
         {
-            throw new ServiceException("导入${functionName}数据不能为空！");
-        }
-        int successNum = 0;
-        int failureNum = 0;
-        StringBuilder successMsg = new StringBuilder();
-        StringBuilder failureMsg = new StringBuilder();
-        for (${ClassName} ${className} : ${className}List)
-        {
-            try
+            if (StringUtils.isEmpty(${className}List))
             {
-                // 验证是否存在这个${functionName}
-                ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
-                ${ClassName} ${className}Exist = null;
-                if (StringUtils.isNotNull(${pkColumn.javaField}))
+                throw new ServiceException("导入${functionName}数据不能为空！");
+            }
+            int successNum = 0;
+            int failureNum = 0;
+            StringBuilder successMsg = new StringBuilder();
+            StringBuilder failureMsg = new StringBuilder();
+            for (${ClassName} ${className} : ${className}List)
+            {
+                try
                 {
-                    ${className}Exist = ${className}Mapper.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
+                    // 验证是否存在这个${functionName}
+                    ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
+                    ${ClassName} ${className}Exist = null;
+                    if (StringUtils.isNotNull(${pkColumn.javaField}))
+                    {
+                            ${className}Exist = ${className}Mapper.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
+                    }
+                    if (StringUtils.isNull(${className}Exist))
+                    {
+                        #foreach ($column in $columns)
+                            #if($column.javaField == 'createTime')
+                                ${className}.setCreateTime(DateUtils.getNowDate());
+                            #end
+                        #end
+                            ${className}Mapper.insert${ClassName}(${className});
+                        successNum++;
+                        String ${pkColumn.javaField}Str = StringUtils.isNotNull(${pkColumn.javaField}) ? ${pkColumn.javaField}.toString() : "新记录";
+                        successMsg.append("<br/>" + successNum + "、${functionName} " + ${pkColumn.javaField}Str + " 导入成功");
+                    }
+                    else if (isUpdateSupport)
+                    {
+                        #foreach ($column in $columns)
+                            #if($column.javaField == 'updateTime')
+                                ${className}.setUpdateTime(DateUtils.getNowDate());
+                            #end
+                        #end
+                            ${className}Mapper.update${ClassName}(${className});
+                        successNum++;
+                        successMsg.append("<br/>" + successNum + "、${functionName} " + ${pkColumn.javaField}.toString() + " 更新成功");
+                    }
+                    else
+                    {
+                        failureNum++;
+                        String ${pkColumn.javaField}Str = StringUtils.isNotNull(${pkColumn.javaField}) ? ${pkColumn.javaField}.toString() : "未知";
+                        failureMsg.append("<br/>" + failureNum + "、${functionName} " + ${pkColumn.javaField}Str + " 已存在");
+                    }
                 }
-                if (StringUtils.isNull(${className}Exist))
-                {
-#foreach ($column in $columns)
-#if($column.javaField == 'createTime')
-                    ${className}.setCreateTime(DateUtils.getNowDate());
-#end
-#end
-                    ${className}Mapper.insert${ClassName}(${className});
-                    successNum++;
-                    String ${pkColumn.javaField}Str = StringUtils.isNotNull(${pkColumn.javaField}) ? ${pkColumn.javaField}.toString() : "新记录";
-                    successMsg.append("<br/>" + successNum + "、${functionName} " + ${pkColumn.javaField}Str + " 导入成功");
-                }
-                else if (isUpdateSupport)
-                {
-#foreach ($column in $columns)
-#if($column.javaField == 'updateTime')
-                    ${className}.setUpdateTime(DateUtils.getNowDate());
-#end
-#end
-                    ${className}Mapper.update${ClassName}(${className});
-                    successNum++;
-                    successMsg.append("<br/>" + successNum + "、${functionName} " + ${pkColumn.javaField}.toString() + " 更新成功");
-                }
-                else
+                catch (Exception e)
                 {
                     failureNum++;
+                    ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
                     String ${pkColumn.javaField}Str = StringUtils.isNotNull(${pkColumn.javaField}) ? ${pkColumn.javaField}.toString() : "未知";
-                    failureMsg.append("<br/>" + failureNum + "、${functionName} " + ${pkColumn.javaField}Str + " 已存在");
+                    String msg = "<br/>" + failureNum + "、${functionName} " + ${pkColumn.javaField}Str + " 导入失败：";
+                    failureMsg.append(msg + e.getMessage());
+                    log.error(msg, e);
                 }
             }
-            catch (Exception e)
+            if (failureNum > 0)
             {
-                failureNum++;
-                ${pkColumn.javaType} ${pkColumn.javaField} = ${className}.get${pkColumn.capJavaField}();
-                String ${pkColumn.javaField}Str = StringUtils.isNotNull(${pkColumn.javaField}) ? ${pkColumn.javaField}.toString() : "未知";
-                String msg = "<br/>" + failureNum + "、${functionName} " + ${pkColumn.javaField}Str + " 导入失败：";
-                failureMsg.append(msg + e.getMessage());
-                log.error(msg, e);
+                failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+                throw new ServiceException(failureMsg.toString());
             }
+            else
+            {
+                successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            }
+            return successMsg.toString();
         }
-        if (failureNum > 0)
-        {
-            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
-            throw new ServiceException(failureMsg.toString());
-        }
-        else
-        {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
-        }
-        return successMsg.toString();
-    }
-#end
+    #end
 }
